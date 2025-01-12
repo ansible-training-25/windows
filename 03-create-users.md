@@ -1,4 +1,4 @@
-# 🚀 **Ansible Playbook: Managing Users, Groups, Package Management **
+# 🚀 **Ansible Playbook: Managing Users, Groups, Package Management**
 
 This project demonstrates how to manage users, groups, chocolatey and updates using Ansible.
 
@@ -48,7 +48,7 @@ ansible_password="devoteam@2024"
 ```
 ---
 
-## 🛠️ **1.1. Variables for Users and Groups**
+## 🛠️ **Variables for Users and Groups**
 
 Define users and their groups in a variable file.
 
@@ -69,7 +69,7 @@ users:
 
 ---
 
-## 📋 **2. Playbook: `users.yml`**
+## 📋 **Playbook: `users.yml`**
 
 This playbook creates users, passwords, manages their group permissions.
 
@@ -135,7 +135,7 @@ powershell --server instance1 --command 'Get-LocalUser'
 powershell --server instance1 --command 'Get-LocalGroup'
 ```
 
-## 📋 **2. Playbook: `packages.yml`**
+## 📋 **Playbook: `packages.yml`**
 Install multiple packages with specific versions
 
 
