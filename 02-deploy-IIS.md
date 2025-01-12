@@ -1,28 +1,4 @@
----
-- name: Install theIIS web service
-  hosts: windows
-
-  tasks:
-    - name: InstallIIS
-      ansible.windows.win_feature:
-        name: Web-Server
-        state: present
-
-    - name: StartIIS service
-      ansible.windows.win_service:
-        name: W3Svc
-        state: started
-
-    - name: Create website index.html
-      ansible.windows.win_copy:
-        content: "{{iis_test_message }}"
-        dest: C:\Inetpub\wwwroot\index.html
-
-    - name: Show website address
-      ansible.builtin.debug:
-        msg: http://{{ ansible_host }}
-
-# 🚀 **Ansible Playbook: Web Server Deployment and Testing**
+# 🚀 **Ansible Playbook: IIS Web Server Deployment and Testing**
 
 This project contains two Ansible playbooks to automate the deployment, configuration, and validation of IIS web servers.
 
