@@ -1,4 +1,28 @@
-# 🚀 **Ansible Playbook: IIS Web Server Deployment and Testing**
+---
+- name: Install theIIS web service
+  hosts: windows
+
+  tasks:
+    - name: InstallIIS
+      ansible.windows.win_feature:
+        name: Web-Server
+        state: present
+
+    - name: StartIIS service
+      ansible.windows.win_service:
+        name: W3Svc
+        state: started
+
+    - name: Create website index.html
+      ansible.windows.win_copy:
+        content: "{{iis_test_message }}"
+        dest: C:\Inetpub\wwwroot\index.html
+
+    - name: Show website address
+      ansible.builtin.debug:
+        msg: http://{{ ansible_host }}
+
+# 🚀 **Ansible Playbook: Web Server Deployment and Testing**
 
 This project contains two Ansible playbooks to automate the deployment, configuration, and validation of IIS web servers.
 
@@ -40,7 +64,7 @@ ansible_password="devoteam@2024"
 ---
 
 
-## 🛠️ ** deploy_iis.yml ** 
+## 🛠️ ** deploy_iis.yml (Beginner) ** 
 
 ### **Description:**  
 This playbook installs and configures IIS servers on managed hosts.
@@ -107,6 +131,89 @@ curl http://instance1:6060
 curl http://instance2:6060
 
 ```
+
+## 🛠️ ** deploy_iis.yml ** 
+
+### **Description:**  
+This playbook installs and configures IIS servers on managed hosts.
+
+```yaml
+---
+- name: Install theIIS web service
+  hosts: webservers
+  vars:
+    iis_sites:
+      - name: 'IIS Site 1'
+        port: '8081'
+        path: 'C:\sites\site1'
+        iis_test_message: 'Hello From Site #1'
+      - name: 'Ansible Site 2'
+        port: '8082'
+        path: 'C:\sites\site2'
+        iis_test_message: 'Hello From Site #2'
+
+
+  tasks:
+    - name: Install IIS
+      ansible.windows.win_feature:
+        name: Web-Server
+        state: present
+
+    - name: Ensure IIS folders are ready
+      ansible.windows.win_file:
+        path: "{{ item.path }}"
+        state: directory
+      with_items: "{{ iis_sites }}"
+
+    - name: Create IIS site
+      community.windows.win_iis_website:
+        name: "{{ item.name }}"
+        state: started
+        port: "{{ item.port }}"
+        physical_path: "{{ item.path }}"
+      with_items: "{{ iis_sites }}"
+      notify: restart iis service
+
+    - name: Template simple web site to iis_site_path as index.html
+      ansible.windows.win_copy:
+        content: '{{ item.iis_test_message }}'
+        dest: '{{ item.path }}\index.html'
+      with_items: "{{ iis_sites }}"
+
+    - name: Open port for site on the firewall
+      community.windows.win_firewall_rule:
+        name: "iisport{{ item.port }}"
+        enable: true
+        state: present
+        localport: "{{ item.port }}"
+        action: Allow
+        direction: In
+        protocol: Tcp
+      with_items: "{{ iis_sites }}"
+
+
+  handlers:
+    - name: restart iis service
+      ansible.windows.win_service:
+        name: W3Svc
+        state: restarted
+        start_mode: auto
+
+```
+### 🚦 **Run the Playbook:**
+```bash
+ansible-navigator run deploy_iis.yml -m stdout -i inventory 
+```
+
+### 🚦  **Verify:**
+```bash
+curl http://instance1:8081
+curl http://instance2:8081
+curl http://instance1:8082
+curl http://instance2:8082
+
+```
+
 ---
 ## 🧪 **4.1. get_web_content.yml (Beginner)**
 
