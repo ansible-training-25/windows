@@ -31,7 +31,7 @@ This project contains an Ansible role named `vhost_role` to automate the deploym
 ```bash
 sudo su - student
 mkdir ~/08-molecule-tests
-cp -rf ~/solutions/04-vhost-role/* ~/08-molecule-tests
+cp -rf ~/solutions/04-vhost-role-container/* ~/08-molecule-tests
 tree ~/08-molecule-tests
 cd ~/08-molecule-tests
 ```
