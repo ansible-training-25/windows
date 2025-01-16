@@ -343,7 +343,7 @@ This master playbook imports and executes the `apache` and `nginx` roles sequent
   hosts: loadbalancers
   roles:
     - nginx
-~             
+          
 ```
 
 ---
