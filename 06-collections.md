@@ -90,7 +90,7 @@ ansible-navigator run backup.yml -i inventory -m stdout -e backup_id=MyID ## Sho
 ansible-navigator run backup.yml -i inventory -m stdout -e backup_id=my_id
 
 ```
-### 🚦  **Verify: Ensure the Loadbalanacing**
+### 🚦  **Verify: Ensure the Backup**
 Execute the following command to verify that the backup was already taken.
 
 ```bash
